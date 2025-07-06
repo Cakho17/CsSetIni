@@ -41,7 +41,12 @@ namespace WinFormsApp1
         public string IniReadValue(string Section, string Key)
         {
             StringBuilder temp = new StringBuilder(255);
-            int i = GetPrivateProfileString(Section, Key, STR_DEFINE_KEY_VALUE_INVALID_EMPTY, temp, 255, this.path);
+            int iResult = GetPrivateProfileString(Section, Key, STR_DEFINE_KEY_VALUE_INVALID_EMPTY, temp, 255, this.path);
+            if (iResult == 0)
+            {
+                // Section might not exist or other error
+                return STR_DEFINE_KEY_VALUE_INVALID_EMPTY;
+            }
             return temp.ToString();
         }
 
@@ -242,7 +247,7 @@ namespace WinFormsApp1
             // Get ini infor
             objIni.path = this.textBox1.Text;
             this.textBox2.Text = objIni.path;
-            objIni.IniWriteValue("objects", "OBJ_009_VALUE", "不不不");
+            objIni.IniWriteValue("objects", "OBJ_009_VALUE", "ﾂ不ﾂ不ﾂ不");
             objIni.GetSectionNames();
 
             // get csv infor
