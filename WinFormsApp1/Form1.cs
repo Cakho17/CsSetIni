@@ -16,7 +16,7 @@ namespace WinFormsApp1
         public const string STR_DEFINE_KEY_VALUE_INVALID_EMPTY = "";
         public const string STR_DEFINE_KEY_VALUE_INVALID_NONSET = "-";
 
-        public string path { get; set; }
+        private string path { get; set; }
         public ArrayList listSections = new ArrayList(); 
         public ArrayList listSubSections = new ArrayList();
 
@@ -30,8 +30,6 @@ namespace WinFormsApp1
         {
             path = INIPath;
         }
-        public INIFile()
-        {}
 
         public void IniWriteValue(string Section, string Key, string Value)
         {
@@ -109,7 +107,7 @@ namespace WinFormsApp1
         public const string STR_DEFINE_KEY_FONT_HIGHT = "FONT_HIGHT";
 
 
-        public string path { get; set; }
+        private string path { get; set; }
         public int indexSection { get; set; }
         public List<string> listHeader = new List<string>();
         public List<SectionUpdateInfomation> allSectionCsvData = new List<SectionUpdateInfomation>();
@@ -122,8 +120,11 @@ namespace WinFormsApp1
             public SectionUpdateInfomation()
             { }
         }
-        public CSVFile()
-        { }
+        public CSVFile(string CSVPath)
+        {
+            path = CSVPath;
+        }
+
         public void ParseCSV()
         {
             using (TextFieldParser textFieldParser = new TextFieldParser(path))
@@ -241,17 +242,13 @@ namespace WinFormsApp1
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            INIFile objIni = new INIFile();
-            CSVFile objCsv = new CSVFile();
+            INIFile objIni = new INIFile(this.textBox1.Text);
+            CSVFile objCsv = new CSVFile(this.textBox2.Text);
 
             // Get ini infor
-            objIni.path = this.textBox1.Text;
-            this.textBox2.Text = objIni.path;
-            objIni.IniWriteValue("objects", "OBJ_009_VALUE", "sss");
             objIni.GetSectionNames();
 
             // get csv infor
-            objCsv.path = this.textBox2.Text;
             objCsv.ParseCSV();
             objCsv.SetSectionUpdateList(ref objIni.listSubSections);
 
